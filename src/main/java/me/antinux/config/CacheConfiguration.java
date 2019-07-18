@@ -43,6 +43,11 @@ public class CacheConfiguration {
             createCache(cm, me.antinux.domain.User.class.getName());
             createCache(cm, me.antinux.domain.Authority.class.getName());
             createCache(cm, me.antinux.domain.User.class.getName() + ".authorities");
+            createCache(cm, me.antinux.domain.Blog.class.getName());
+            createCache(cm, me.antinux.domain.Entry.class.getName());
+            createCache(cm, me.antinux.domain.Entry.class.getName() + ".tags");
+            createCache(cm, me.antinux.domain.Tag.class.getName());
+            createCache(cm, me.antinux.domain.Tag.class.getName() + ".entries");
             // jhipster-needle-ehcache-add-entry
         };
     }

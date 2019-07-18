@@ -33,8 +33,11 @@ import java.util.stream.Collectors;
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
+
     private static final String MESSAGE_KEY = "message";
+
     private static final String PATH_KEY = "path";
+
     private static final String VIOLATIONS_KEY = "violations";
 
     @Value("${jhipster.clientApp.name}")
@@ -76,7 +79,8 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @Override
-    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
+    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                @Nonnull NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
             .map(f -> new FieldErrorVM(f.getObjectName(), f.getField(), f.getCode()))
@@ -102,8 +106,10 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(ex, request, HeaderUtil.createFailureAlert(applicationName, false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex,
+                                                                  NativeWebRequest request) {
+        return create(ex, request, HeaderUtil
+            .createFailureAlert(applicationName, false, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
     }
 
     @ExceptionHandler
@@ -114,4 +120,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .build();
         return create(ex, problem, request);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleAccessDeniedException(AccessDeniedException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.FORBIDDEN)
+            .build();
+        return create(ex, problem, request);
+    }
+
 }

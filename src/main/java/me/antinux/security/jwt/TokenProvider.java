@@ -24,6 +24,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class TokenProvider implements InitializingBean {
 
+    private static final String USER_ID = "user";
+
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
